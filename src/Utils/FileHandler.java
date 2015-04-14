@@ -38,17 +38,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
+ * FileHandler class to handle writting and reading from files
  *
  * @author michaeldowdle
  */
 public class FileHandler {
 
     /**
-     * 
+     *
      * @param fileName
      * @return
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     public static String FileToString(String fileName) throws FileNotFoundException, IOException {
         String contents = "";
@@ -71,11 +72,11 @@ public class FileHandler {
     }
 
     /**
-     * 
+     *
      * @param data
      * @param fileName
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     public static void StringToFile(String data, String fileName) throws FileNotFoundException, IOException {
         //write String to File
@@ -86,11 +87,11 @@ public class FileHandler {
     }
 
     /**
-     * 
+     *
      * @param path
      * @param encoding
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public static String readFile(String path, Charset encoding) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -98,9 +99,9 @@ public class FileHandler {
     }
 
     /**
-     * 
+     *
      * @param fileName
-     * @throws IOException 
+     * @throws IOException
      */
     public static void deleteFile(String fileName) throws IOException {
 

@@ -26,7 +26,7 @@ package Utils;
 import java.util.ArrayList;
 
 /**
- *
+ * WarningArray class to handle a collection of warning objects
  * @author michaeldowdle
  */
 public class WarningArray {
@@ -37,24 +37,48 @@ public class WarningArray {
         warnings = new ArrayList();
     }
 
+    /**
+     * 
+     * @param warnings 
+     */
     public WarningArray(ArrayList<Warning> warnings) {
         this.warnings = warnings;
     }
     
+    /**
+     * 
+     * @param WA
+     * @throws CloneNotSupportedException 
+     */
     public void appendWVA(WarningArray WA) throws CloneNotSupportedException {
         for (Warning warning : WA.warnings) {
             this.warnings.add(warning.clone());
         }
     }
     
+    /**
+     * 
+     * @param lineNo
+     * @param error
+     * @param description 
+     */
     public void addWarning(int lineNo, String error, String description) {
         warnings.add(new Warning(lineNo, error, description));
     }
     
+    /**
+     * 
+     * @param warning
+     * @throws CloneNotSupportedException 
+     */
     public void addWarning(Warning warning) throws CloneNotSupportedException {
         warnings.add(warning.clone());
     }
 
+    /**
+     * 
+     * @return 
+     */
     public ArrayList<Warning> getWarnings() {
         return warnings;
     }

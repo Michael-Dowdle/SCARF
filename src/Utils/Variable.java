@@ -24,7 +24,7 @@
 package Utils;
 
 /**
- *
+ * Variable class to handle variable details as objects
  * @author michaeldowdle
  */
 public class Variable implements Cloneable {
@@ -34,6 +34,12 @@ public class Variable implements Cloneable {
     private final int decLineNo;
     private boolean init;
 
+    /**
+     * 
+     * @param name
+     * @param type
+     * @param decLineNo 
+     */
     public Variable(String name, String type, int decLineNo) {
         this.name = name;
         this.type = type;
@@ -41,6 +47,13 @@ public class Variable implements Cloneable {
         this.init = false;
     }
 
+    /**
+     * 
+     * @param name
+     * @param type
+     * @param decLineNo
+     * @param init 
+     */
     public Variable(String name, String type, int decLineNo, boolean init) {
         this.name = name;
         this.type = type;
@@ -48,26 +61,51 @@ public class Variable implements Cloneable {
         this.init = init;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getDecLineNo() {
         return decLineNo;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isInit() {
         return init;
     }
 
+    /**
+     * 
+     * @param init 
+     */
     public void setInit(boolean init) {
         this.init = init;
     }
 
+    /**
+     * 
+     * @return
+     * @throws CloneNotSupportedException 
+     */
     @Override
     public Variable clone() throws CloneNotSupportedException {
         return (Variable) super.clone();

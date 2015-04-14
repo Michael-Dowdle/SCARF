@@ -34,7 +34,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Tokeniser class to handle reading and organising Tokens using 
+ * java.io.StreamTokenizer, incorporating TokenTypes, TokenInfos and TokenIDs.
+ * 
  * @author michaeldowdle
  */
 public class Tokeniser {
@@ -43,12 +45,22 @@ public class Tokeniser {
     BufferedReader reader;
     StreamTokenizer st;
 
+    /**
+     * TokenType Subclass handling tokenType details
+     */
     private class TokenType {
 
         public final String view;
         public final Pattern regex;
         public final int tokenType, tokenID;
 
+        /**
+         * 
+         * @param view
+         * @param regex
+         * @param tokenType
+         * @param tokenID 
+         */
         public TokenType(String view, Pattern regex, int tokenType, int tokenID) {
             super();
             this.view = view;
@@ -58,8 +70,14 @@ public class Tokeniser {
         }
     }
 
+    /**
+     * TokenInfo subclass handling TokenInfo details
+     */
     private class TokenInfo {
 
+        /**
+         * 
+         */
         public static final int KEYWORD = 0,
                 IDENTIFIER = 1,
                 CONSTANT = 2,
@@ -68,8 +86,14 @@ public class Tokeniser {
                 OPERATOR = 5;
     }
 
+    /**
+     * TokenID subclass handling tokenID details
+     */
     public class TokenID {
 
+        /**
+         * Global IDs for different tokens
+         */
         public static final int EQUALS = '=',
                 EOF = StreamTokenizer.TT_EOF,
                 EOL = StreamTokenizer.TT_EOL,
@@ -87,7 +111,13 @@ public class Tokeniser {
 
     private final LinkedList<TokenType> tokenTypes;
 
-    public Tokeniser(String file) throws FileNotFoundException {
+    /**
+     * Primary constructor used internally by createTokeniser
+     * 
+     * @param file
+     * @throws FileNotFoundException 
+     */
+    private Tokeniser(String file) throws FileNotFoundException {
         super();
         tokenTypes = new LinkedList<>();
         scfis = new FileInputStream(file);
@@ -95,6 +125,13 @@ public class Tokeniser {
         st = new StreamTokenizer(reader);
     }
 
+    /**
+     * createTokeniser used to create a new Tokeniser object
+     * 
+     * @param file
+     * @return Tokeniser instance
+     * @throws FileNotFoundException 
+     */
     public static Tokeniser createTokeniser(String file) throws FileNotFoundException {
         Tokeniser tokeniser = new Tokeniser(file);
 
@@ -145,12 +182,24 @@ public class Tokeniser {
         return tokeniser;
     }
 
+    /**
+     * add a new token type
+     * @param regex
+     * @param tokenType
+     * @param tokenID 
+     */
     public void add(String regex, int tokenType, int tokenID) {
         tokenTypes.add(
                 new TokenType(
                         regex, Pattern.compile("^(" + regex + ")"), tokenType, tokenID));
     }
 
+    /**
+     * get the next token from the Buffered reader
+     * 
+     * @return
+     * @throws IOException 
+     */
     public Token nextToken() throws IOException {
         st.nextToken();
         String type = "", name;

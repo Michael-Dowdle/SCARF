@@ -33,19 +33,40 @@ import java.io.IOException;
 
 /**
  *
+ * UninitialisedVariable class to handle task of checking for uninitialised
+ * variable being used
+ *
  * @author michaeldowdle
  */
 public class UninitialisedVariable extends Task {
 
+    //set up tokeniser
     private Tokeniser tokeniser;
     private Token token;
     private final String errorDescription = "Uninitialised Variable";
 
+    /**
+     * UninitialisedVariable constructor, takes source code file path as
+     * parameter
+     *
+     * @param sourceCodeFile
+     */
     public UninitialisedVariable(String sourceCodeFile) {
         this.sourceCodeFile = sourceCodeFile;
     }
 
-    public WarningArray checkForUninitialisedVariable() throws FileNotFoundException, IOException, CloneNotSupportedException {
+    /**
+     * checkForUninitialisedVariable method, main method to check for first
+     * instance of an open scope bracket
+     *
+     * @return WarningArray with any warnings found in source code
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws CloneNotSupportedException
+     */
+    public WarningArray checkForUninitialisedVariable()
+            throws FileNotFoundException, IOException,
+            CloneNotSupportedException {
 
         //get source code file contents
         ScopeVariableArray sva = new ScopeVariableArray();
@@ -63,21 +84,20 @@ public class UninitialisedVariable extends Task {
         return wa;
     }
 
-    /*
-     find open scope bracket
-        
-     create a childSVA from currentSVA and adding any parameterised variables to it
-     run recursive function (find matching close bracket)
-     pass childSVA and sourceCode as parameters
-        
-     append returnedWVA to currentWVA
+    /**
+     * find open scope bracket create a childSVA from currentSVA and adding any
+     * parameterised variables to it run recursive function (find matching close
+     * bracket) pass childSVA and sourceCode as parameters
+     *
+     * append returnedWVA to currentWVA
+     *
+     * @param parentSVA
+     * @return
+     * @throws IOException
+     * @throws CloneNotSupportedException
      */
-    /*
-     find close scope bracket
-        
-     return the currentWVA
-     */
-    public WarningArray findEndOfScope(ScopeVariableArray parentSVA) throws IOException, CloneNotSupportedException {
+    public WarningArray findEndOfScope(ScopeVariableArray parentSVA)
+            throws IOException, CloneNotSupportedException {
 
         ScopeVariableArray currentSVA = parentSVA;
         WarningArray currentWA = new WarningArray();
@@ -87,12 +107,14 @@ public class UninitialisedVariable extends Task {
 
             switch (token.getId()) {
                 case Tokeniser.TokenID.OPEN_SCOPE_BRACKET:   // open scope bracket
-                    
+
                     currentWA.appendWVA(findEndOfScope(currentSVA));
                     break;
                 case -3: // keyword
-                    
-                    if ("int".equals(token.getName()) || "bool".equals(token.getName()) || "char".equals(token.getName())) { //check for a primitive data type
+
+                    if ("int".equals(token.getName())
+                            || "bool".equals(token.getName())
+                            || "char".equals(token.getName())) { //check for a primitive data type
 
                         handleDeclarationStatement(currentSVA);
 
@@ -111,13 +133,19 @@ public class UninitialisedVariable extends Task {
                     break;
                 case Tokeniser.TokenID.CLOSE_SCOPE_BRACKET: // close scope bracket
                 default:
-                    
+
                     break;
             }
         } while (Tokeniser.TokenID.EOF != token.getId());
         return currentWA;
     }
 
+    /**
+     * handleDeclarationStatement 
+     * 
+     * @param currentSVA
+     * @throws IOException 
+     */
     public void handleDeclarationStatement(ScopeVariableArray currentSVA) throws IOException {
         //handle declared variable
         handleDeclaredVariable(currentSVA);
@@ -132,6 +160,13 @@ public class UninitialisedVariable extends Task {
         }
     }
 
+    /**
+     * handleKnownVariableStatement
+     * 
+     * @param currentSVA
+     * @param currentWA
+     * @throws IOException 
+     */
     public void handleKnownVariableStatement(ScopeVariableArray currentSVA, WarningArray currentWA) throws IOException {
         //save variable
         Token varToken = token;
@@ -147,7 +182,7 @@ public class UninitialisedVariable extends Task {
                 if (!currentSVA.isVariableInitialised(varToken.getName())) { // check if variables uninitialised
 
                     //add variable warning to currentWVA
-                    currentWA.addWarning(varToken.getLineNo(), errorDescription, "variable 1 [" + varToken.getName() + " " + varToken.getType() + "  "+ varToken.getId() + "]");
+                    currentWA.addWarning(varToken.getLineNo(), errorDescription, "variable 1 [" + varToken.getName() + " " + varToken.getType() + "  " + varToken.getId() + "]");
                 }
 
                 token = tokeniser.nextToken();
@@ -158,7 +193,7 @@ public class UninitialisedVariable extends Task {
                 if (currentSVA.containsVariable(varToken.getName())) { // check if known variable
                     if (!currentSVA.isVariableInitialised(varToken.getName())) { // check if variables uninitialised
                         //add variable warning to currentWVA
-                        currentWA.addWarning(varToken.getLineNo(), errorDescription, "variable 2 [" + varToken.getName() + " " + varToken.getType() + "  "+ varToken.getId() + "]");
+                        currentWA.addWarning(varToken.getLineNo(), errorDescription, "variable 2 [" + varToken.getName() + " " + varToken.getType() + "  " + varToken.getId() + "]");
                     }
                 }
             } else { // variable being initialised
@@ -169,8 +204,15 @@ public class UninitialisedVariable extends Task {
         }
     }
 
+    /**
+     * handleConstantStatement
+     * 
+     * @param currentSVA
+     * @param currentWA
+     * @throws IOException 
+     */
     public void handleConstantStatement(ScopeVariableArray currentSVA, WarningArray currentWA) throws IOException {
-        
+
         Token varToken;
         token = tokeniser.nextToken();
 
@@ -186,13 +228,19 @@ public class UninitialisedVariable extends Task {
                     if (!currentSVA.isVariableInitialised(varToken.getName())) { // check if variables uninitialised
 
                         //add variable warning to currentWVA
-                        currentWA.addWarning(varToken.getLineNo(), errorDescription, "variable 3 [" + varToken.getName() + " " + varToken.getType() + "  "+ varToken.getId() + "]");
+                        currentWA.addWarning(varToken.getLineNo(), errorDescription, "variable 3 [" + varToken.getName() + " " + varToken.getType() + "  " + varToken.getId() + "]");
                     }
                 }
             }
         }
     }
 
+    /**
+     * handleDeclaredVariable
+     * 
+     * @param currentSVA
+     * @throws IOException 
+     */
     public void handleDeclaredVariable(ScopeVariableArray currentSVA) throws IOException {
 
         Token typeToken = token;

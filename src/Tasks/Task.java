@@ -25,6 +25,8 @@ package Tasks;
 
 /**
  *
+ * Task class to be inherited by any new task
+ * 
  * @author michaeldowdle
  */
 public class Task {

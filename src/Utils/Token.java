@@ -24,7 +24,8 @@
 package Utils;
 
 /**
- *
+ * Token class to handle token details as objects
+ * 
  * @author michaeldowdle
  */
 public class Token {
@@ -32,6 +33,14 @@ public class Token {
     private String type, name;
     private int id, lineNo;
 
+    /**
+     * Token constructor
+     * 
+     * @param type
+     * @param name
+     * @param id
+     * @param lineNo 
+     */
     public Token(String type, String name, int id, int lineNo) {
         this.type = type;
         this.name = name;
@@ -39,34 +48,66 @@ public class Token {
         this.lineNo = lineNo;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * 
+     * @param type 
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * 
+     * @param name 
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * 
+     * @param id 
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getLineNo() {
         return lineNo;
     }
 
+    /**
+     * 
+     * @param lineNo 
+     */
     public void setLineNo(int lineNo) {
         this.lineNo = lineNo;
     }

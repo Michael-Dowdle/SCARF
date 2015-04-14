@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
+ * CommentStripper class to handle stripping comments out of source code
  * 
  * @author michaeldowdle
  */
@@ -39,6 +40,8 @@ public class CommentStripper {
     private String commentFreeSourceCodeFile = "";
 
     /**
+     * CommentStripper constructor takes path for source code to be stripped
+     * and new clean file to be created
      * 
      * @param sourceCodeFile
      * @param commentFreeSourceCodeFile 
@@ -81,6 +84,8 @@ public class CommentStripper {
     }
 
     /**
+     * Strip methods state machine to remove comments from code replacing with 
+     * blank lines as not to affect line numbering
      * 
      * @throws IOException 
      */

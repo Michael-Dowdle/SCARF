@@ -24,7 +24,7 @@
 package Utils;
 
 /**
- *
+ * Warning class to handle warning details as objects
  * @author michaeldowdle
  */
 public class Warning implements Cloneable {
@@ -32,41 +32,80 @@ public class Warning implements Cloneable {
     private int lineNo;
     private String error, description;
 
+    /**
+     * 
+     * @param lineNo
+     * @param error
+     * @param description 
+     */
     public Warning(int lineNo, String error, String description) {
         this.lineNo = lineNo;
         this.error = error;
         this.description = description;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getLineNo() {
         return lineNo;
     }
 
+    /**
+     * 
+     * @param lineNo 
+     */
     public void setLineNo(int lineNo) {
         this.lineNo = lineNo;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getError() {
         return error;
     }
 
+    /**
+     * 
+     * @param error 
+     */
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * 
+     * @param description 
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * 
+     * @return
+     * @throws CloneNotSupportedException 
+     */
     @Override
     public Warning clone() throws CloneNotSupportedException {
         return (Warning) super.clone();
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return "\tError Type:\t" + error + "\n\tDescription:\t" 

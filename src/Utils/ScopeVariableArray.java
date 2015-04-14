@@ -26,17 +26,26 @@ package Utils;
 import java.util.LinkedList;
 
 /**
- *
+ * ScopeVariableArray class to handle variables of particular scopes
+ * 
  * @author michaeldowdle
  */
 public class ScopeVariableArray {
 
     private LinkedList<Variable> variableList;
 
+    /**
+     * ScopeVariableArray constructor
+     */
     public ScopeVariableArray() {
         variableList = new LinkedList();
     }
 
+    /**
+     * ScopeVariableArray constructor cloning from a pre existing SVA
+     * @param parentList
+     * @throws CloneNotSupportedException 
+     */
     public ScopeVariableArray(ScopeVariableArray parentList) throws CloneNotSupportedException {
         super();
         //clone the elements of the parentList
@@ -45,26 +54,51 @@ public class ScopeVariableArray {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public LinkedList<Variable> getVariableList() {
         return variableList;
     }
 
+    /**
+     * 
+     * @param name
+     * @param type
+     * @param decLineNo 
+     */
     public void addVariable(String name, String type, int decLineNo) {
         variableList.add(new Variable(name, type, decLineNo));
     }
     
+    /**
+     * 
+     * @param name
+     * @param type
+     * @param decLineNo
+     * @param init 
+     */
     public void addVariable(String name, String type, int decLineNo, boolean init) {
         variableList.add(new Variable(name, type, decLineNo, init));
     }
 
+    /**
+     * 
+     * @param name 
+     */
     public void initialiseVariable(String name) {
-        for (Variable variable : variableList) {
-            if (variable.getName().equals(name)) {
-                variable.setInit(true);
-            }
-        }
+        variableList.stream().filter((variable) 
+                -> (variable.getName().equals(name))).forEach((variable) -> {
+            variable.setInit(true);
+        });
     }
 
+    /**
+     * 
+     * @param name
+     * @return 
+     */
     public boolean containsVariable(String name) {
         boolean containsVariable = false;
         for (Variable variable : variableList) {
@@ -75,6 +109,11 @@ public class ScopeVariableArray {
         return containsVariable;
     }
 
+    /**
+     * 
+     * @param name
+     * @return 
+     */
     public boolean isVariableInitialised(String name) {
         boolean init = false;
         for (Variable variable : variableList) {

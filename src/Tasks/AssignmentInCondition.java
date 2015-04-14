@@ -32,6 +32,8 @@ import java.io.InputStreamReader;
 
 /**
  *
+ * class to handling checking for assignment in a condition
+ * 
  * @author michaeldowdle
  */
 public class AssignmentInCondition extends Task {
@@ -40,16 +42,32 @@ public class AssignmentInCondition extends Task {
     int lineNo = 0;
     int bracketDepth = 0;
 
+    /**
+     * AssignmentInCondition constructor taking path for source code file
+     * as parameters
+     * 
+     * @param sourceCodeFile 
+     */
     public AssignmentInCondition(String sourceCodeFile) {
         this.sourceCodeFile = sourceCodeFile;
     }
 
+    /**
+     * 
+     * main checking method for the assignment in condition class, 
+     * sets up warning array checks line by line of source code for an 'if'
+     * 
+     * @return WarningArray
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public WarningArray checkForSingleAssignment() throws FileNotFoundException, IOException {
 
         //read in file to string stream
         FileInputStream scfis = new FileInputStream(sourceCodeFile);
         reader = new BufferedReader(new InputStreamReader(scfis));
 
+        //set up warning array
         WarningArray wa = new WarningArray();
         String errorDescription = "Assignment In Condition";
 
@@ -58,15 +76,19 @@ public class AssignmentInCondition extends Task {
         String line = reader.readLine();
         while (line != null) {
             //System.out.println("checking next line:\t" + lineNo);
+            
+            //check for an if statement
             if (checkForKeyword("if(", line, lineNo)
                     || checkForKeyword("if (", line, lineNo)) {
                 String condition = getCondition(line);
 
+                //check for an assignment in condition
                 if (condition.contains("=")) {
                     if (condition.charAt(condition.indexOf("=") - 1) != '!'
                             && condition.charAt(condition.indexOf("=") - 1) != '<'
                             && condition.charAt(condition.indexOf("=") - 1) != '>') {
                         if (condition.charAt(condition.indexOf("=") + 1) != '=') {
+                            //create warning for assignment in condition
                             wa.addWarning(lineNo, errorDescription, condition);
                         }
                     }
@@ -76,10 +98,19 @@ public class AssignmentInCondition extends Task {
             //get next line of string stream
             line = reader.readLine();
             lineNo++;
-        }
+        } //while not end of file
         return wa;
     }
 
+    /**
+     * checkForKeyword method to check for a particular String inside the 
+     * String source code line of the file
+     * 
+     * @param keyword
+     * @param line
+     * @param lineNo
+     * @return boolean true if the line contains the String keyword
+     */
     public boolean checkForKeyword(String keyword, String line, int lineNo) {
 
         boolean keywordFound = false;
@@ -89,6 +120,16 @@ public class AssignmentInCondition extends Task {
         return keywordFound;
     }
 
+    /**
+     * 
+     * getMatchingCloseBrace recursively check for a matching close bracket
+     * 
+     * @param line
+     * @return lineLocation of the close bracket,
+     *          if condition doesn't end of this line, method returns a 0
+     * 
+     * @throws IOException 
+     */
     public int getMatchingCloseBrace(String line) throws IOException {
 
         int CloseBraceLocation = 1;
@@ -135,6 +176,13 @@ public class AssignmentInCondition extends Task {
         return -1;
     }
 
+    /**
+     * getCondition method to get the entire condition
+     * 
+     * @param line
+     * @return String condition
+     * @throws IOException 
+     */
     public String getCondition(String line) throws IOException {
 
         String condition = line.substring(line.indexOf("if"));

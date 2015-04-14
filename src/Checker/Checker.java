@@ -31,7 +31,8 @@ import Utils.WarningArray;
 import java.io.IOException;
 
 /**
- *
+ * Checker class to handle the core functionality of the Tool
+ * 
  * @author michaeldowdle
  */
 public class Checker {
